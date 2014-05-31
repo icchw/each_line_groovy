@@ -14,6 +14,7 @@
 import org.apache.poi.ss.usermodel.*
 import org.jggug.kobo.gexcelapi.*
 
+def inputFileName = args[0]
 def inputs = []
 def characterCode = args.length >= 3 ? args[2] : "UTF-8"
 
@@ -32,7 +33,7 @@ if (args[0] ==~ /.*xlsx?/) {
     }
   }
 
-  def book = GExcel.open(args[0])
+  def book = GExcel.open(inputFileName)
   def sheet = book[0]
     sheet.eachWithIndex {row, i ->
     if (i == 0) {
@@ -43,7 +44,7 @@ if (args[0] ==~ /.*xlsx?/) {
   }
 } else {
   // text
-  def inputFile = new File(args[0])
+  def inputFile = new File(inputFileName)
   inputFile.readLines(characterCode).each {
     if (!it.empty) {
       inputs << (it.split('\t') as ArrayList)
@@ -57,6 +58,8 @@ def engine = new groovy.text.SimpleTemplateEngine()
 def binding = ['values' :  inputs, 'inputFileName' : args[0], 'templateFileName' : templateFileName ]
 def template = engine.createTemplate(f).make(binding)
 
-def date = new Date().format('yyyyMMdd_HHmmss')
-def result = new File(date + '_'  + templateFileName)
+// def date = new Date().format('yyyyMMdd_HHmmss')
+// def result = new File(date + '_'  + templateFileName)
+def resultFileName = inputFileName.replaceFirst(/(.+)(\.[^.]+$)/){it[1]} + templateFileName.replaceFirst(/(.+)(\.[^.]+$)/){it[2]}
+def result = new File(resultFileName)
 result.write(template.toString(), characterCode)
