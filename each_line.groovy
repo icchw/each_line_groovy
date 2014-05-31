@@ -63,7 +63,7 @@ def binding = ['values' :  inputs, 'inputFileName' : args[0], 'templateFileName'
 def template = engine.createTemplate(f).make(binding)
 
 def date = new Date().format('yyyyMMdd_HHmmss')
-// def result = new File(date + '_'  + templateFileName)
+// def resultFileName = date + '_'  + templateFileName
 def resultFileName = date + '_' + splitFileName(inputFileName)[1] + splitFileName(templateFileName)[2]
 def result = new File(resultFileName)
 result.write(template.toString(), characterCode)
