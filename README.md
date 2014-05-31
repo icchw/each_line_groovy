@@ -1,3 +1,5 @@
 each_line_groovy
 ================
-groovy -c UTF-8 each_line.groovy input.txt template.sql UTF-8
+* groovy each_line.groovy input.txt template.sql SJIS
+* groovy each_line.groovy input.xlsx template.sql
+* groovy each_line.groovy input.xls template.sql
